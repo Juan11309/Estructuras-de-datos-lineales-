@@ -1,17 +1,17 @@
 import random
 
 def poblar(codigos, nombres, notas):
-    pool = ["Ana","Luis","Sofia","Juan","Maria","Carlos","Laura","Pedro","Valeria","Diego"] #funcion 1
+    lista_nombres = ["Ana","Luis","Sofia","Juan","Santiago","Esteban","Maria","Pedro","Valerie","Diego"]
     for i in range(len(codigos)):
         codigos[i]  = random.randint(1000, 9999)
-        nombres[i]  = pool[i]
-        notas[i][0] = round(random.uniform(1.0, 5.0), 2)
-        notas[i][1] = round(random.uniform(1.0, 5.0), 2)
-        notas[i][2] = round(random.uniform(1.0, 5.0), 2)
+        nombres[i]  = lista_nombres[i]
+        notas[i][0] = random.randint(10, 50) / 10
+        notas[i][1] = random.randint(10, 50) / 10
+        notas[i][2] = random.randint(10, 50) / 10
         notas[i][3] = round(notas[i][0]*0.30 + notas[i][1]*0.30 + notas[i][2]*0.40, 2)
 
-def quicksort_codigo(codigos, nombres, notas, ini, fin):# QuickSort por código ASCENDENTE 
-    if ini >= fin:
+def quicksort_codigo(codigos, nombres, notas, ini, fin):# QuickSort por codigo ASCENDENTE 
+    if ini >= fin:  # caso base: si el subarreglo tiene 0 o 1 elemento, ya esta ordenado
         return
     pivote = codigos[fin]
     i = ini - 1
@@ -25,6 +25,7 @@ def quicksort_codigo(codigos, nombres, notas, ini, fin):# QuickSort por código 
     codigos[i], codigos[fin] = codigos[fin], codigos[i]
     nombres[i], nombres[fin] = nombres[fin], nombres[i]
     notas[i],   notas[fin]   = notas[fin],   notas[i]
+    # ordena recursivamente la mitad izquierda y la derecha
     quicksort_codigo(codigos, nombres, notas, ini, i - 1)
     quicksort_codigo(codigos, nombres, notas, i + 1, fin)
 
@@ -68,10 +69,10 @@ def buscar_por_codigo(codigos, nombres, notas, codigo_buscado): #funcion 3
 
 def mostrar_por_definitiva(codigos, nombres, notas): #funcion 4
     quicksort_def_desc(codigos, nombres, notas, 0, len(codigos) - 1)
-    print("\nCodigo | Nombre     | P1   | P2   | P3   | Definitiva")
+    print("\nCodigo  Nombre     P1   P2  P3   Definitiva")
 
     for i in range(len(codigos)):
-        print(codigos[i], "|", nombres[i], "|", notas[i][0], "|", notas[i][1], "|", notas[i][2], "|", notas[i][3])
+        print(codigos[i], "  ", nombres[i], "  ", notas[i][0], "  ", notas[i][1], "  ", notas[i][2], "  ", notas[i][3])
 
 N = 10
 codigos = [0] * N
@@ -86,6 +87,3 @@ ordenar_por_codigo(codigos, nombres, notas)
 
 print("\nBusqueda codigo existente:", codigos[N // 2])
 buscar_por_codigo(codigos, nombres, notas, codigos[N // 2])
-
-print("\nBusqueda codigo inexistente: 9999")
-buscar_por_codigo(codigos, nombres, notas, 9999)
