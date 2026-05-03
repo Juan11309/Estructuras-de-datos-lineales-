@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Arrays;
 
 public class GestionPedidos {
 
@@ -28,7 +29,7 @@ public class GestionPedidos {
     }
 
 
-    // FUNCIÓN 1: Poblar los arreglos con datos aleatorios
+    // FUNCIÓN 1: Poblar 
     public void funcion1() {
 
         Random rand = new Random();
@@ -47,22 +48,19 @@ public class GestionPedidos {
             precio[i] = rand.nextInt(21) + 10;
         }
 
+        
         // Mostrar los arreglos generados para verificar
         System.out.println("\n--- Datos generados (entrada) ---");
-        System.out.print("Producto : ");
-        for (int i = 0; i < n; i++) System.out.print(producto[i] + " ");
-        System.out.print("\nCantidad : ");
-        for (int i = 0; i < n; i++) System.out.print(cantidad[i] + " ");
-        System.out.print("\nPrecio   : ");
-        for (int i = 0; i < n; i++) System.out.print(precio[i] + " ");
-        System.out.println();
+        System.out.println("Producto : " + Arrays.toString(producto));
+        System.out.println("Cantidad : " + Arrays.toString(cantidad));
+        System.out.println("Precio   : " + Arrays.toString(precio));
     }
 
 
     // FUNCIÓN 2: Agrupar por código, sumar cantidades y calcular el precio promedio por producto
         public void funcion2() {
 
-        // Arreglos auxiliares (solo se necesitan aquí adentro)
+        // Arreglos que solo se necesitan dentro de esta fucnion 
         int[] sumaPrecios   = new int[n];
         int[] contadorVeces = new int[n];
 
@@ -102,12 +100,7 @@ public class GestionPedidos {
         ordenarPorProducto();
     }
 
-    // =========================================================
-    // SELECTION SORT: Ordena los 3 arreglos por código de
-    //                 producto de menor a mayor.
-    //                 Es privado porque es un método de apoyo
-    //                 interno, no lo necesita llamar el Main.
-    // =========================================================
+    // SELECTION SORT: Ordena los 3 arreglos por código de producto de menor a mayor.
     private void ordenarPorProducto() {
 
         for (int i = 0; i < cantUnicos - 1; i++) {
@@ -135,9 +128,6 @@ public class GestionPedidos {
         }
     }
 
-    // =========================================================
-    // FUNCIÓN 3: Mostrar los resultados por consola
-    // =========================================================
     public void funcion3() {
 
         System.out.println("\n===== RESULTADOS =====");
@@ -155,7 +145,6 @@ public class GestionPedidos {
             sumaPrecioPromedio += precioPromedio[i];
         }
 
-        System.out.println("----------------------------------------------");
         System.out.println("Suma total de cantidades : " + sumaTotalCantidad);
         System.out.printf("Promedio de venta general: %.2f%n", sumaPrecioPromedio / cantUnicos);
     }
