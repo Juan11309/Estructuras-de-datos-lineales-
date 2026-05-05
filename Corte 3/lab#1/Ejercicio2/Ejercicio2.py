@@ -1,89 +1,48 @@
 import random
+# funcion 1
+codigos = [random.randint(1000, 9999) for _ in range(10)]
+nombres = ["Ana", "Luis", "Sofia", "Juan", "Santiago", "Esteban", "Maria", "Pedro", "Valerie", "Diego"]
+notas   = [[random.randint(10, 50) for _ in range(3)] for _ in range(10)] 
 
-def poblar(codigos, nombres, notas):
-    lista_nombres = ["Ana","Luis","Sofia","Juan","Santiago","Esteban","Maria","Pedro","Valerie","Diego"]
-    for i in range(len(codigos)):
-        codigos[i]  = random.randint(1000, 9999)
-        nombres[i]  = lista_nombres[i]
-        notas[i][0] = random.randint(10, 50) / 10
-        notas[i][1] = random.randint(10, 50) / 10
-        notas[i][2] = random.randint(10, 50) / 10
-        notas[i][3] = round(notas[i][0]*0.30 + notas[i][1]*0.30 + notas[i][2]*0.40, 2)
+def definitiva(n):
+    return n[0] * 0.30 + n[1] * 0.30 + n[2] * 0.40
 
-def quicksort_codigo(codigos, nombres, notas, ini, fin):# QuickSort por codigo ASCENDENTE 
-    if ini >= fin:  # caso base: si el subarreglo tiene 0 o 1 elemento, ya esta ordenado
-        return
-    pivote = codigos[fin]
-    i = ini - 1
-    for j in range(ini, fin):
-        if codigos[j] <= pivote:
-            i += 1
-            codigos[i], codigos[j] = codigos[j], codigos[i]
-            nombres[i], nombres[j] = nombres[j], nombres[i]
-            notas[i],   notas[j]   = notas[j],   notas[i]
-    i += 1
-    codigos[i], codigos[fin] = codigos[fin], codigos[i]
-    nombres[i], nombres[fin] = nombres[fin], nombres[i]
-    notas[i],   notas[fin]   = notas[fin],   notas[i]
-    # ordena recursivamente la mitad izquierda y la derecha
-    quicksort_codigo(codigos, nombres, notas, ini, i - 1)
-    quicksort_codigo(codigos, nombres, notas, i + 1, fin)
+# funcion 2
+def busqueda_binaria(codigos, codigo):
+    low = 0
+    high = len(codigos) - 1
 
-def quicksort_def_desc(codigos, nombres, notas, ini, fin): # QuickSort por definitiva DESCENDENTE
-    if ini >= fin:
-        return
-    pivote = notas[fin][3]
-    i = ini - 1
-    for j in range(ini, fin):
-        if notas[j][3] >= pivote:
-            i += 1
-            codigos[i], codigos[j] = codigos[j], codigos[i]
-            nombres[i], nombres[j] = nombres[j], nombres[i]
-            notas[i],   notas[j]   = notas[j],   notas[i]
-    i += 1
-    codigos[i], codigos[fin] = codigos[fin], codigos[i]
-    nombres[i], nombres[fin] = nombres[fin], nombres[i]
-    notas[i],   notas[fin]   = notas[fin],   notas[i]
-    quicksort_def_desc(codigos, nombres, notas, ini, i - 1)
-    quicksort_def_desc(codigos, nombres, notas, i + 1, fin)
+    while low <= high:
+        mid = (low + high) // 2
 
-def ordenar_por_codigo(codigos, nombres, notas): #funcion 2
-    quicksort_codigo(codigos, nombres, notas, 0, len(codigos) - 1)
+        if codigos[mid] == codigo:
+            return mid
+        elif codigos[mid] < codigo:
+            low = mid + 1
+        else:
+            high = mid - 1
 
-def buscar_por_codigo(codigos, nombres, notas, codigo_buscado): #funcion 3
-    bajo, alto, pos = 0, len(codigos) - 1, -1
-    while bajo <= alto:
-        mid = (bajo + alto) // 2
-        if   codigos[mid] == codigo_buscado: pos = mid; break
-        elif codigos[mid] <  codigo_buscado: bajo = mid + 1
-        else:                                alto = mid - 1
-    if pos == -1:
-        print("Codigo", codigo_buscado, "no encontrado.")
-    else:
-        print("Codigo:",     codigos[pos])
-        print("Nombre:",     nombres[pos])
-        print("Parcial 1:",  notas[pos][0])
-        print("Parcial 2:",  notas[pos][1])
-        print("Parcial 3:",  notas[pos][2])
-        print("Definitiva:", notas[pos][3])
+    return -1
+# funcion 3
+for i in range(1, 10):
+    key_cod   = codigos[i]
+    key_nom   = nombres[i]
+    key_notas = notas[i]
+    key_prom  = definitiva(key_notas)
+    j = i - 1
 
-def mostrar_por_definitiva(codigos, nombres, notas): #funcion 4
-    quicksort_def_desc(codigos, nombres, notas, 0, len(codigos) - 1)
-    print("\nCodigo  Nombre     P1   P2  P3   Definitiva")
+    while j >= 0 and definitiva(notas[j]) > key_prom:
+        codigos[j + 1] = codigos[j]
+        nombres[j + 1] = nombres[j]
+        notas[j + 1]   = notas[j]
+        j -= 1
 
-    for i in range(len(codigos)):
-        print(codigos[i], "  ", nombres[i], "  ", notas[i][0], "  ", notas[i][1], "  ", notas[i][2], "  ", notas[i][3])
+    codigos[j + 1] = key_cod
+    nombres[j + 1] = key_nom
+    notas[j + 1]   = key_notas
 
-N = 10
-codigos = [0] * N
-nombres = [""] * N
-notas   = [[0.0] * 4 for _ in range(N)]
-
-poblar(codigos, nombres, notas)
-
-mostrar_por_definitiva(codigos, nombres, notas)
-
-ordenar_por_codigo(codigos, nombres, notas)
-
-print("\nBusqueda codigo existente:", codigos[N // 2])
-buscar_por_codigo(codigos, nombres, notas, codigos[N // 2])
+# funcion 4
+print("\n DATOS ORDENADOS")
+print(f"{'Código':<8} {'Nombre':<12} {'N1':>4} {'N2':>4} {'N3':>4} {'Prom':>6}")
+for i in range(10):
+    print(f"{codigos[i]:<8} {nombres[i]:<12} {notas[i][0]:>4} {notas[i][1]:>4} {notas[i][2]:>4} {definitiva(notas[i]):>6.2f}")
