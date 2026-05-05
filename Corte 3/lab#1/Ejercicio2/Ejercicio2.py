@@ -31,7 +31,7 @@ for i in range(1, 10):
     key_prom  = definitiva(key_notas)
     j = i - 1
 
-    while j >= 0 and definitiva(notas[j]) > key_prom:
+    while j >= 0 and definitiva(notas[j]) < key_prom:
         codigos[j + 1] = codigos[j]
         nombres[j + 1] = nombres[j]
         notas[j + 1]   = notas[j]
