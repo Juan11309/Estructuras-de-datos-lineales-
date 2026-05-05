@@ -59,74 +59,62 @@ public class GestionPedidos {
 
     // FUNCIÓN 2: Agrupar por código, sumar cantidades y calcular el precio promedio por producto
         public void funcion2() {
+    ordenarOriginales();
 
-        // Arreglos que solo se necesitan dentro de esta fucnion 
-        int[] sumaPrecios   = new int[n];
-        int[] contadorVeces = new int[n];
+    int sumaPrecios   = 0;
+    int contadorVeces = 0;
 
-        // Recorrer todos los registros
-        for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
 
-            // Buscar si el código ya fue registrado en prodUnico
-            int pos = -1;
-            for (int j = 0; j < cantUnicos; j++) {
-                if (prodUnico[j] == producto[i]) {
-                    pos = j;
-                    break;
-                }
+
+        sumaPrecios   += precio[i];
+        contadorVeces++;
+
+        if (i == n - 1 || producto[i] != producto[i + 1]) {
+            prodUnico[cantUnicos]     = producto[i];
+            totalCantidad[cantUnicos] = 0;
+
+            // Sumar todas las cantidades de este grupo
+            for (int k = i - contadorVeces + 1; k <= i; k++) {
+                totalCantidad[cantUnicos] += cantidad[k];
             }
 
-            if (pos == -1) {
-                // Es un producto nuevo → agregar
-                prodUnico[cantUnicos]     = producto[i];
-                totalCantidad[cantUnicos] = cantidad[i];
-                sumaPrecios[cantUnicos]   = precio[i];
-                contadorVeces[cantUnicos] = 1;
-                cantUnicos++;
-            } else {
-                // El producto ya existe → acumular
-                totalCantidad[pos] += cantidad[i];
-                sumaPrecios[pos]   += precio[i];
-                contadorVeces[pos]++;
-            }
-        }
+            // Calcular el precio promedio de este grupo
+            precioPromedio[cantUnicos] = (double) sumaPrecios / contadorVeces;
 
-        // Calcular el precio promedio para cada producto único
-        for (int i = 0; i < cantUnicos; i++) {
-            precioPromedio[i] = (double) sumaPrecios[i] / contadorVeces[i];
-        }
+            cantUnicos++;
 
-        // Ordenar los tres arreglos por código de producto
-        ordenarPorProducto();
-    }
-
-    // SELECTION SORT: Ordena los 3 arreglos por código de producto de menor a mayor.
-    private void ordenarPorProducto() {
-
-        for (int i = 0; i < cantUnicos - 1; i++) {
-
-            // Encontrar el índice del menor código a partir de i
-            int posMinimo = i;
-            for (int j = i + 1; j < cantUnicos; j++) {
-                if (prodUnico[j] < prodUnico[posMinimo]) {
-                    posMinimo = j;
-                }
-            }
-
-            // Intercambiar en los 3 arreglos para mantener consistencia
-            int tempProd = prodUnico[i];
-            prodUnico[i] = prodUnico[posMinimo];
-            prodUnico[posMinimo] = tempProd;
-
-            int tempCant = totalCantidad[i];
-            totalCantidad[i] = totalCantidad[posMinimo];
-            totalCantidad[posMinimo] = tempCant;
-
-            double tempPrecio = precioPromedio[i];
-            precioPromedio[i] = precioPromedio[posMinimo];
-            precioPromedio[posMinimo] = tempPrecio;
+            // Reiniciar acumuladores para el siguiente grupo
+            sumaPrecios   = 0;
+            contadorVeces = 0;
         }
     }
+}
+
+private void ordenarOriginales() {
+
+    for (int i = 0; i < n - 1; i++) {
+
+        int posMinimo = i;
+        for (int j = i + 1; j < n; j++) {
+            if (producto[j] < producto[posMinimo]) {
+                posMinimo = j;
+            }
+        }
+
+        int tempProd = producto[i];
+        producto[i] = producto[posMinimo];
+        producto[posMinimo] = tempProd;
+
+        int tempCant = cantidad[i];
+        cantidad[i] = cantidad[posMinimo];
+        cantidad[posMinimo] = tempCant;
+
+        int tempPrecio = precio[i];
+        precio[i] = precio[posMinimo];
+        precio[posMinimo] = tempPrecio;
+    }
+}
 
     public void funcion3() {
 
