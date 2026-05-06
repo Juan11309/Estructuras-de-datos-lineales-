@@ -8,7 +8,7 @@ def poblar():
     codigos = [random.randint(1000, 9999) for _ in range(10)]
     nombres = ["Ana", "Luis", "Sofia", "Juan", "Santiago", "Esteban", "Maria", "Pedro", "Valerie", "Diego"]
     notas   = [[random.randint(10, 50) for _ in range(3)] for _ in range(10)]
-    return codigos, nombres, notas  # ← eliminado el return duplicado
+    return codigos, nombres, notas  
 
 # Función 2
 def ordenar(codigos, nombres, notas):
@@ -19,18 +19,18 @@ def ordenar(codigos, nombres, notas):
         key_prom  = definitiva(key_notas)
         j = i - 1
 
-        while j >= 0 and definitiva(notas[j]) < key_prom:  # ← indentado dentro del for
+        while j >= 0 and definitiva(notas[j]) < key_prom:  
             codigos[j + 1] = codigos[j]
             nombres[j + 1] = nombres[j]
             notas[j + 1]   = notas[j]
             j -= 1
 
-        codigos[j + 1] = key_cod  # ← indentado dentro del for
+        codigos[j + 1] = key_cod 
         nombres[j + 1] = key_nom
         notas[j + 1]   = key_notas
 
 # Función 3
-def busqueda_binaria(codigos, nombres, notas, codigo_buscado):  # ← parámetros completos
+def busqueda_binaria(codigos, nombres, notas, codigo_buscado):  
     indices = sorted(range(len(codigos)), key=lambda i: codigos[i])
     cod_ord = [codigos[i] for i in indices]
 
