@@ -21,3 +21,6 @@ def radix_sort(arr):
         exp *= 10  # siguiente dígito
 
     return arr
+
+resultado = radix_sort(arr)
+print(resultado)
