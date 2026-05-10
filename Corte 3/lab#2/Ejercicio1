@@ -1,0 +1,69 @@
+placas     = ["JNT400", "QNA555", "AAA123", "CVY000", "QKA233", "MJO941", "BCM122"]
+matriculas = [40010231, 5055178, 4891230, 14503098, 24353789, 39941452, 7841263]
+
+def radix_sort_msd(placas, matriculas, pos=0):
+       # Caso base: si hay 1 o ningún elemento, ya está ordenado
+    if len(placas) <= 1:
+        return placas, matriculas
+
+    max_len = max(len(p) for p in placas)
+
+    if pos >= max_len:
+        return placas, matriculas
+
+ # Crear buckets: espacio(0), letras a-z (1-26), guion(27), numeros 0-9 (28-37)
+    buckets = {}
+
+    for i in range(len(placas)):
+         # Si la cadena ya no tiene caracter en esta posición, va al bucket de espacio
+        char = placas[i][pos].lower() if pos < len(placas[i]) else ' '
+        if char not in buckets:
+            buckets[char] = ([], [])
+        buckets[char][0].append(placas[i])
+        buckets[char][1].append(matriculas[i])
+
+    placas_result = []
+    matriculas_result = []
+
+    for key in sorted(buckets.keys()):
+         # Recursión: ordenar cada bucket por el siguiente carácter
+        sub_placas, sub_matriculas = radix_sort_msd(buckets[key][0], buckets[key][1], pos + 1)
+        placas_result.extend(sub_placas)
+        matriculas_result.extend(sub_matriculas)
+
+    return placas_result, matriculas_result
+
+
+def busqueda_binaria(placas, matriculas, placa_buscada):
+    izquierda = 0
+    derecha = len(placas) - 1
+
+    while izquierda <= derecha:
+        medio = (izquierda + derecha) // 2
+
+        if placas[medio] == placa_buscada:
+            return matriculas[medio]
+        elif placas[medio] < placa_buscada:
+            izquierda = medio + 1
+        else:
+            derecha = medio - 1
+
+    return None  # No encontrada
+
+print("\n DATOS INICIALES ")
+print("Placas:    ", placas)
+print("Matrículas:", matriculas)
+
+
+placas, matriculas = radix_sort_msd(placas, matriculas)
+
+print("\n DATOS ORDENADOS ")
+print("Placas:    ", placas)
+print("Matrículas:", matriculas)
+
+buscar = "JNT400"
+resultado = busqueda_binaria(placas, matriculas, buscar)
+
+print("\n BÚSQUEDA ")
+print(f"Placa: {buscar}")
+print(f"La Matrícula es: {resultado}")
